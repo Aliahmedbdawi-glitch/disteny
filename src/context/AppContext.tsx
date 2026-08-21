@@ -9,7 +9,7 @@ import {
 } from 'react'
 import { applyNegative, applyPositive } from '../lib/streak'
 import { loadAllImages, loadState, saveImage, saveState } from '../lib/storage'
-import type { AppState, PanelSide } from '../lib/types'
+import type { AppState, PanelSide, SlipPenalty } from '../lib/types'
 
 interface ImageUrls {
   left: string | null
@@ -22,8 +22,8 @@ interface AppContextValue {
   updateState: (patch: Partial<AppState>) => void
   updatePanel: (side: PanelSide, text: string) => void
   uploadImage: (side: PanelSide, file: File) => Promise<void>
-  confirmPositive: () => { streakGained: number; scoreGained: number }
-  confirmNegative: () => void
+  confirmPositive: () => { streakGained: number; scoreGained: number; moneyGained: number }
+  confirmNegative: (penalty: SlipPenalty) => void
   markIntroSeen: () => void
   refreshImages: () => Promise<void>
 }
@@ -64,17 +64,21 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const confirmPositive = useCallback(() => {
-    let result = { streakGained: 0, scoreGained: 0 }
+    let result = { streakGained: 0, scoreGained: 0, moneyGained: 0 }
     setState((prev) => {
       const next = applyPositive(prev)
-      result = { streakGained: next.streakGained, scoreGained: next.scoreGained }
+      result = {
+        streakGained: next.streakGained,
+        scoreGained: next.scoreGained,
+        moneyGained: next.moneyGained,
+      }
       return next.state
     })
     return result
   }, [])
 
-  const confirmNegative = useCallback(() => {
-    setState((prev) => applyNegative(prev))
+  const confirmNegative = useCallback((penalty: SlipPenalty) => {
+    setState((prev) => applyNegative(prev, penalty))
     if (navigator.vibrate) navigator.vibrate(40)
   }, [])
 

@@ -7,6 +7,7 @@ export interface AppState {
   streakGoal: number
   streak: number
   score: number
+  money: number
   lastPositiveDate: string | null
   seenIntro: boolean
   greetings: string[]
@@ -16,17 +17,21 @@ export interface AppState {
 
 export type PanelSide = 'left' | 'right'
 
+export type SlipPenalty = 100 | 1000
+
 export interface PositiveResult {
   state: AppState
   streakGained: number
   scoreGained: number
+  moneyGained: number
 }
 
 export const DEFAULT_STATE: AppState = {
   habitTitle: '',
-  streakGoal: 30,
+  streakGoal: 100,
   streak: 0,
   score: 0,
+  money: -1500,
   lastPositiveDate: null,
   seenIntro: false,
   greetings: [],

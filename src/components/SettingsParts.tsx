@@ -4,7 +4,7 @@ import { CAPTION_MAX_LENGTH, GREETING_MAX_LENGTH } from '../lib/text'
 import type { PanelSide } from '../lib/types'
 import './SettingsParts.css'
 
-const PRESETS = [7, 14, 21, 30, 60, 90]
+const PRESETS = [7, 14, 21, 30, 60, 90, 100]
 
 interface GoalStepperProps {
   value: number

@@ -9,6 +9,7 @@ function mergeState(parsed: Partial<AppState>): AppState {
   return {
     ...DEFAULT_STATE,
     ...parsed,
+    money: typeof parsed.money === 'number' ? parsed.money : DEFAULT_STATE.money,
     greetings: Array.isArray(parsed.greetings) ? parsed.greetings : DEFAULT_STATE.greetings,
     left: { ...DEFAULT_STATE.left, ...parsed.left },
     right: { ...DEFAULT_STATE.right, ...parsed.right },

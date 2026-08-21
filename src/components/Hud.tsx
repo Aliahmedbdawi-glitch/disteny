@@ -7,6 +7,7 @@ interface HudProps {
   habitTitle: string
   streak: number
   score: number
+  money: number
   streakGoal: number
   pulse?: boolean
   drain?: boolean
@@ -48,10 +49,12 @@ function LedRail({
   )
 }
 
-export default function Hud({ habitTitle, streak, score, streakGoal, pulse, drain }: HudProps) {
+export default function Hud({ habitTitle, streak, score, money, streakGoal, pulse, drain }: HudProps) {
   const reduceMotion = useReducedMotion()
   const goalComplete = isGoalComplete(streak, streakGoal)
   const progress = getGoalProgress(streak, streakGoal)
+  const moneyClass =
+    money < 0 ? 'hud__stat-value--money-neg' : 'hud__stat-value--money-pos'
 
   return (
     <header className="hud glass">
@@ -92,6 +95,18 @@ export default function Hud({ habitTitle, streak, score, streakGoal, pulse, drai
               transition={{ duration: 0.25 }}
             >
               {score}
+            </motion.span>
+          </div>
+          <div className="hud__stat">
+            <span className="hud__stat-label">Money</span>
+            <motion.span
+              className={`hud__stat-value mono ${moneyClass}`}
+              key={money}
+              initial={reduceMotion ? false : { y: -4, opacity: 0.5 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.25 }}
+            >
+              {money}
             </motion.span>
           </div>
         </div>

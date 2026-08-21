@@ -123,6 +123,11 @@
   border-color: var(--signal-left);
 }
 
+.verify-sheet__btn--danger:hover {
+  background: #e0b56a;
+  border-color: #e0b56a;
+}
+
 .hold-rail {
   margin-bottom: 16px;
 }

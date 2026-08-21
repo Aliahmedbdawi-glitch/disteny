@@ -5,10 +5,12 @@ import './VerifySheet.css'
 
 const HOLD_DURATION = 1200
 
+export type ConfirmKind = 'mild' | 'severe'
+
 interface VerifySheetProps {
   side: PanelSide
   caption: string
-  onConfirm: () => void
+  onConfirm: (kind?: ConfirmKind) => void
   onCancel: () => void
 }
 
@@ -43,7 +45,7 @@ export default function VerifySheet({ side, caption, onConfirm, onCancel }: Veri
 
       if (progress >= 1) {
         completedRef.current = true
-        onConfirm()
+        onConfirm('severe')
         return
       }
       rafRef.current = requestAnimationFrame(tick)
@@ -86,7 +88,7 @@ export default function VerifySheet({ side, caption, onConfirm, onCancel }: Veri
         </p>
         <p className="verify-sheet__hint">
           {isLeft
-            ? 'Reset streak to 0. Score is kept.'
+            ? 'Confirm: -100. Hold: -1000. Both reset streak. Score is kept.'
             : 'Confirm to log a positive tap.'}
         </p>
 
@@ -98,11 +100,11 @@ export default function VerifySheet({ side, caption, onConfirm, onCancel }: Veri
               aria-valuenow={Math.round(holdProgress * 100)}
               aria-valuemin={0}
               aria-valuemax={100}
-              aria-label="Hold to reset streak"
+              aria-label="Hold to slip hard, minus 1000"
             >
               <div className="hold-rail__fill" style={{ width: `${holdProgress * 100}%` }} />
               <span className="hold-rail__label">
-                {holdProgress >= 1 ? 'Reset' : 'Hold 1.2s to reset'}
+                {holdProgress >= 1 ? 'Hard slip' : 'Hold 1.2s to slip hard (-1000)'}
               </span>
             </div>
             <button
@@ -113,7 +115,7 @@ export default function VerifySheet({ side, caption, onConfirm, onCancel }: Veri
               onPointerLeave={endHold}
               onPointerCancel={endHold}
             >
-              Press and hold
+              Press and hold -1000
             </button>
             <div className="hold-rail__progress" aria-hidden="true">
               <div
@@ -128,8 +130,16 @@ export default function VerifySheet({ side, caption, onConfirm, onCancel }: Veri
           <button type="button" className="verify-sheet__btn verify-sheet__btn--cancel" onClick={onCancel}>
             Cancel
           </button>
-          {!isLeft && (
-            <button type="button" className="verify-sheet__btn verify-sheet__btn--confirm" onClick={onConfirm}>
+          {isLeft ? (
+            <button
+              type="button"
+              className="verify-sheet__btn verify-sheet__btn--danger"
+              onClick={() => onConfirm('mild')}
+            >
+              Slip -100
+            </button>
+          ) : (
+            <button type="button" className="verify-sheet__btn verify-sheet__btn--confirm" onClick={() => onConfirm()}>
               Confirm
             </button>
           )}

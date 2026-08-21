@@ -6,6 +6,7 @@ import SplitPanel from '../components/SplitPanel'
 import VerifySheet from '../components/VerifySheet'
 import { useApp } from '../context/AppContext'
 import { pickGreeting } from '../lib/greetings'
+import type { ConfirmKind } from '../components/VerifySheet'
 import type { PanelSide } from '../lib/types'
 
 export default function Home() {
@@ -29,7 +30,7 @@ export default function Home() {
     setActiveSide(null)
   }, [])
 
-  const handleConfirm = useCallback(() => {
+  const handleConfirm = useCallback((kind?: ConfirmKind) => {
     if (!verifySide) return
 
     if (verifySide === 'right') {
@@ -43,7 +44,7 @@ export default function Home() {
         setGreeting(picked)
       }
     } else {
-      confirmNegative()
+      confirmNegative(kind === 'severe' ? 1000 : 100)
       setDrain(true)
       setTimeout(() => setDrain(false), 500)
     }
@@ -58,6 +59,7 @@ export default function Home() {
         habitTitle={state.habitTitle}
         streak={state.streak}
         score={state.score}
+        money={state.money}
         streakGoal={state.streakGoal}
         pulse={pulse}
         drain={drain}

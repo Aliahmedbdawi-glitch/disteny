@@ -47,7 +47,7 @@
 .hud__stats {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 10px;
 }
 
 .hud__stat {
@@ -67,13 +67,21 @@
 
 .hud__stat-value {
   font-family: var(--font-mono);
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 500;
   line-height: 1;
   font-variant-numeric: tabular-nums lining-nums;
 }
 
 .hud__stat-value--streak {
+  color: var(--signal-right);
+}
+
+.hud__stat-value--money-neg {
+  color: var(--signal-left);
+}
+
+.hud__stat-value--money-pos {
   color: var(--signal-right);
 }
 
@@ -156,6 +164,10 @@
 
   .hud__wordmark {
     font-size: 16px;
+  }
+
+  .hud__stats {
+    gap: 16px;
   }
 
   .hud__stat-value {
